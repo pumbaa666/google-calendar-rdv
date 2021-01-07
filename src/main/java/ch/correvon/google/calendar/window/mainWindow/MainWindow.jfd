@@ -4,9 +4,9 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "unrelgap, labelcompgap, right:default, labelcompgap, default:grow(0.3), labelcompgap, default, labelcompgap, default, labelcompgap, default:grow, labelcompgap, default, labelcompgap, default:grow(0.5), labelcompgap, unrelgap"
+			"$columnSpecs": "unrelgap, labelcompgap, right:default, labelcompgap, default:grow(0.3), labelcompgap, default, labelcompgap, default, labelcompgap, default, labelcompgap, default:grow, labelcompgap, default, labelcompgap, default:grow(0.5), labelcompgap, unrelgap"
 			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, fill:default:grow, linegap, fill:default:grow, linegap, default, linegap, default, linegap, default"
-			"$columnGroupIds": "0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0"
+			"$columnGroupIds": "0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0"
 		} ) {
 			name: "this"
 			"$sizePolicy": 1
@@ -19,13 +19,13 @@ new FormModel {
 				"foreground": new java.awt.Color( 0, 134, 175, 255 )
 				addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "buttonConnectMouseClicked", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
+				"gridX": 15
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelAccountValue"
 				"text": "text"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 15
+				"gridX": 17
 				"gridWidth": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -35,33 +35,22 @@ new FormModel {
 					"JavaCodeGenerator.variableLocal": true
 				}
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 7
+				"gridX": 9
 				"gridY": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelNbEvents"
 				"text": "0"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 9
+				"gridX": 11
 				"gridY": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labelCalendar"
 				"text": "Agendas : "
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
+				"gridX": 15
 				"gridY": 3
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollEvents"
-				add( new FormComponent( "javax.swing.JTable" ) {
-					name: "tableEvents"
-				} )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 7
-				"gridY": 5
-				"gridWidth": 5
-				"gridHeight": 13
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "labellDateFrom"
@@ -72,6 +61,17 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3
 				"gridY": 5
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollEvents"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "tableEvents"
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 9
+				"gridY": 5
+				"gridWidth": 5
+				"gridHeight": 13
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "txtDateFrom"
@@ -85,7 +85,7 @@ new FormModel {
 					name: "tableCalendars"
 				} )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 13
+				"gridX": 15
 				"gridY": 5
 				"gridWidth": 3
 				"gridHeight": 9
@@ -138,7 +138,7 @@ new FormModel {
 				}
 				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonExitActionPerformed", true ) )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 15
+				"gridX": 17
 				"gridY": 17
 			} )
 			add( new FormComponent( "ch.correvon.google.calendar.components.TimedLabel" ) {
@@ -146,7 +146,7 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 3
 				"gridY": 19
-				"gridWidth": 13
+				"gridWidth": 15
 			} )
 			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 				name: "menuBar"

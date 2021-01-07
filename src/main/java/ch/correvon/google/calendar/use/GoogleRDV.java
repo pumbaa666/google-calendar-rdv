@@ -21,10 +21,8 @@ public class GoogleRDV
 	}
 
 	/*
-	 * TODO
-	 * Sauver les paramètres (dates, filtre, agendas sélectionnés)
-	 * Joli DateChooser pour les 2 dates
-	 * git
-	 *		version NodeJS ? (branche séparée)
+	 *	TODO
+	 *	Sauver les paramètres (dates, filtre, agendas sélectionnés)
+	 *	Version NodeJS ? (branche séparée)
 	 */
 }

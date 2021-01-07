@@ -61,8 +61,8 @@ public class EventModel extends AbstractTableModel implements ColorableModel
 		}
 		Collections.sort(this.events, comparator);
 		
-		if(this.sortingOrder)
-			Collections.reverse(this.events);
+//		if(this.sortingOrder) // Comportement un peu incohérent quand on tape des dates dans le datePicker. Et c'est plus fluide pour l'utilisateur.
+//			Collections.reverse(this.events);
 		fireTableDataChanged();
 	}
 	

@@ -2,6 +2,7 @@ package ch.correvon.google.calendar.window.mainWindow;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -34,8 +35,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
+import javax.swing.WindowConstants;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
@@ -46,6 +52,7 @@ import org.apache.commons.logging.LogFactory;
 import ch.correvon.google.calendar.GoogleCalendarService;
 import ch.correvon.google.calendar.components.TimedLabel;
 import ch.correvon.google.calendar.helper.BrowserHelper;
+import ch.correvon.google.calendar.helper.DateHelper;
 import ch.correvon.google.calendar.helper.PreferencesBundle;
 import ch.correvon.google.calendar.object.MyCalendar;
 import ch.correvon.google.calendar.object.MyEvent;
@@ -311,6 +318,19 @@ public class MainWindow extends JFrame implements WindowListener
 		this.updateLabelNbEvents();
 	}
 	
+	public void setDatePicker()
+	{
+		try
+		{
+			this.datePickerFrom.setDate(DateHelper.dateToLocalDate(DATE_SDF.parse(this.txtDateFrom.getText())));
+			this.datePickerTo.setDate(DateHelper.dateToLocalDate(DATE_SDF.parse(this.txtDateTo.getText())));
+		}
+		catch(ParseException e)
+		{
+			s_logger.debug("rien");
+		}
+	}
+	
 	public void filterEvents()
 	{
 		String filter = this.txtFilter.getText();
@@ -543,9 +563,9 @@ public class MainWindow extends JFrame implements WindowListener
 		JLabel labelRDV = new JLabel();
 		this.labelNbEvents = new JLabel();
 		this.labelCalendar = new JLabel();
+		JLabel labellDateFrom = new JLabel();
 		this.scrollEvents = new JScrollPane();
 		this.tableEvents = new JTable();
-		JLabel labellDateFrom = new JLabel();
 		this.txtDateFrom = new JTextField();
 		this.scrollCalendars = new JScrollPane();
 		this.tableCalendars = new JTable();
@@ -558,12 +578,12 @@ public class MainWindow extends JFrame implements WindowListener
 		this.labelMessage = new TimedLabel();
 
 		//======== this ========
-		setDefaultCloseOperation(3);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FormLayout(
-			"$ugap, $lcgap, right:default, $lcgap, default:grow(0.3), 2*($lcgap, default), $lcgap, default:grow, $lcgap, default, $lcgap, default:grow(0.5), $lcgap, $ugap",
+			"$ugap, $lcgap, right:default, $lcgap, default:grow(0.3), 3*($lcgap, default), $lcgap, default:grow, $lcgap, default, $lcgap, default:grow(0.5), $lcgap, $ugap",
 			"6*(default, $lgap), 2*(fill:default:grow, $lgap), 2*(default, $lgap), default"));
-		((FormLayout)contentPane.getLayout()).setColumnGroups(new int[][] {{5, 11, 15}});
+		((FormLayout)contentPane.getLayout()).setColumnGroups(new int[][] {{5, 13, 17}});
 
 		//======== menuBar ========
 
@@ -584,42 +604,44 @@ public class MainWindow extends JFrame implements WindowListener
 
 		//---- buttonConnect ----
 		this.buttonConnect.setText("Connexion");
+		this.buttonConnect.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		this.buttonConnect.setForeground(new Color(0, 134, 175));
 		this.buttonConnect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				buttonConnectMouseClicked(e);
 			}
 		});
-		contentPane.add(this.buttonConnect, CC.xy(13, 1));
+		contentPane.add(this.buttonConnect, CC.xy(15, 1));
 
 		//---- labelAccountValue ----
 		this.labelAccountValue.setText("text");
-		contentPane.add(this.labelAccountValue, CC.xywh(15, 1, 3, 1));
+		contentPane.add(this.labelAccountValue, CC.xywh(17, 1, 3, 1));
 
 		//---- labelRDV ----
 		labelRDV.setText("Rendez-vous :");
-		contentPane.add(labelRDV, CC.xy(7, 3));
+		contentPane.add(labelRDV, CC.xy(9, 3));
 
 		//---- labelNbEvents ----
 		this.labelNbEvents.setText("0");
-		contentPane.add(this.labelNbEvents, CC.xy(9, 3));
+		contentPane.add(this.labelNbEvents, CC.xy(11, 3));
 
 		//---- labelCalendar ----
 		this.labelCalendar.setText("Agendas : ");
-		contentPane.add(this.labelCalendar, CC.xy(13, 3));
-
-		//======== scrollEvents ========
-		this.scrollEvents.setViewportView(this.tableEvents);
-		contentPane.add(this.scrollEvents, CC.xywh(7, 5, 5, 13));
+		contentPane.add(this.labelCalendar, CC.xy(15, 3));
 
 		//---- labellDateFrom ----
 		labellDateFrom.setText("De :");
 		contentPane.add(labellDateFrom, CC.xy(3, 5));
+
+		//======== scrollEvents ========
+		this.scrollEvents.setViewportView(this.tableEvents);
+		contentPane.add(this.scrollEvents, CC.xywh(9, 5, 5, 13));
 		contentPane.add(this.txtDateFrom, CC.xy(5, 5));
 
 		//======== scrollCalendars ========
 		this.scrollCalendars.setViewportView(this.tableCalendars);
-		contentPane.add(this.scrollCalendars, CC.xywh(13, 5, 3, 9));
+		contentPane.add(this.scrollCalendars, CC.xywh(15, 5, 3, 9));
 
 		//---- labelDateTo ----
 		labelDateTo.setText("A :");
@@ -649,8 +671,8 @@ public class MainWindow extends JFrame implements WindowListener
 				buttonExitActionPerformed(e);
 			}
 		});
-		contentPane.add(buttonExit, CC.xy(15, 17));
-		contentPane.add(this.labelMessage, CC.xywh(3, 19, 13, 1));
+		contentPane.add(buttonExit, CC.xy(17, 17));
+		contentPane.add(this.labelMessage, CC.xywh(3, 19, 15, 1));
 		setSize(545, 345);
 		setLocationRelativeTo(getOwner());
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -770,6 +792,49 @@ public class MainWindow extends JFrame implements WindowListener
 		@SuppressWarnings("unchecked") Map<TextAttribute, Integer> attributes = (Map<TextAttribute, Integer>)font.getAttributes();
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		this.buttonConnect.setFont(font.deriveFont(attributes));
+		
+		// DatePicker
+		DatePickerSettings dateSettingsFrom = new DatePickerSettings();
+		dateSettingsFrom.setVisibleDateTextField(false);
+		dateSettingsFrom.setGapBeforeButtonPixels(0);
+        
+        this.datePickerFrom = new DatePicker(dateSettingsFrom);
+        this.datePickerFrom.addDateChangeListener(new DateChangeListener()
+		{
+			@Override public void dateChanged(DateChangeEvent e) {
+				Date datePickerDate =  DateHelper.localDateToDate(e.getNewDate());
+				try
+				{
+					Date txtDate = DATE_SDF.parse(MainWindow.this.txtDateFrom.getText());
+					if(txtDate.compareTo(datePickerDate) == 0)
+						return;
+					MainWindow.this.txtDateFrom.setText(DATE_SDF.format(DateHelper.localDateToDate(e.getNewDate())));
+				}
+				catch(ParseException e1){}
+			}
+		});
+        getContentPane().add(this.datePickerFrom, CC.xy(7, 5));
+        
+		DatePickerSettings dateSettingsTo = new DatePickerSettings();
+		dateSettingsTo.setVisibleDateTextField(false);
+		dateSettingsTo.setGapBeforeButtonPixels(0);
+		this.datePickerTo = new DatePicker(dateSettingsTo);
+		this.datePickerTo.addDateChangeListener(new DateChangeListener()
+		{
+			@Override public void dateChanged(DateChangeEvent e) {
+				Date datePickerDate =  DateHelper.localDateToDate(e.getNewDate());
+				try
+				{
+					Date txtDate = DATE_SDF.parse(MainWindow.this.txtDateTo.getText());
+					if(txtDate.compareTo(datePickerDate) == 0)
+						return;
+					MainWindow.this.txtDateTo.setText(DATE_SDF.format(DateHelper.localDateToDate(e.getNewDate())));
+				}
+				catch(ParseException e1){}
+			}
+		});
+        getContentPane().add(this.datePickerTo, CC.xy(7, 7));
+
 	}
 
 	/* ------------------------------------------------------------------------ *\
@@ -783,6 +848,8 @@ public class MainWindow extends JFrame implements WindowListener
 	private boolean connected;
 	private SwingWorker<Void, Void> eventSwingWorker;
 //	private boolean refreshEvent;
+	private DatePicker datePickerFrom;
+	private DatePicker datePickerTo;
 
 	private List<Event> googleEvents;
 

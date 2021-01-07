@@ -27,5 +27,7 @@
 	<classpathentry kind="lib" path="lib/jgoodies-forms.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/pumbaa/google-calendar-lib-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/LGoodDatePicker/LGoodDatePicker-11.1.0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/LGoodDatePicker/LGoodDatePicker-11.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
