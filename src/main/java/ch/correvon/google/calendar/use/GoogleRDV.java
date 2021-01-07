@@ -8,7 +8,7 @@ import ch.correvon.google.calendar.window.mainWindow.MainWindow;
 public class GoogleRDV
 {
 	private static Log s_logger = LogFactory.getLog(GoogleRDV.class);
-	public static final String APPLICATION_NAME = "Google RDV";
+	public static final String APPLICATION_NAME = "PUMBAA google-cal RENDEZ-VOUS";
 	private static final String VERSION = "0.1";
 
 	/*
