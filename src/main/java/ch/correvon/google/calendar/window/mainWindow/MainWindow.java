@@ -20,17 +20,20 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -547,6 +550,67 @@ public class MainWindow extends JFrame implements WindowListener
 		}
 	}
 
+	private void radioMonthActionPerformed(ActionEvent e) {
+		this.timeIntervalChanged();
+	}
+
+	private void radioWeekActionPerformed(ActionEvent e) {
+		this.timeIntervalChanged();
+	}
+
+	private void radioTodayActionPerformed(ActionEvent e) {
+		this.timeIntervalChanged();
+	}
+	
+	private void timeIntervalChanged()
+	{
+		// get today and clear time of day
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.SECOND);
+		cal.clear(Calendar.MILLISECOND);
+
+		if(this.radioToday.isSelected())
+		{
+//			Date today = new Date();
+			this.datePickerFrom.setDateToToday();
+			this.datePickerTo.setDateToToday();
+			return;
+		}
+
+		if(this.radioWeek.isSelected())
+		{
+			// https://stackoverflow.com/questions/2937086/how-to-get-the-first-day-of-the-current-week-and-month
+			// get start of this week in milliseconds
+			cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+			s_logger.debug("Start of this week:       " + cal.getTime());
+			this.datePickerFrom.setDate(DateHelper.dateToLocalDate(cal.getTime()));
+
+			// start of the next week
+			cal.add(Calendar.DAY_OF_WEEK, 6);
+			s_logger.debug("End of this week:   " + cal.getTime());
+			this.datePickerTo.setDate(DateHelper.dateToLocalDate(cal.getTime()));
+			
+			return;
+		}
+
+		if(this.radioMonth.isSelected())
+		{
+			// get start of this week in milliseconds
+			cal.set(Calendar.DAY_OF_MONTH, 1);
+			s_logger.debug("Start of this month:       " + cal.getTime());
+			this.datePickerFrom.setDate(DateHelper.dateToLocalDate(cal.getTime()));
+
+			// start of the next week
+			cal.set(Calendar.DAY_OF_MONTH, cal.getMaximum(Calendar.DAY_OF_MONTH));
+			s_logger.debug("End of this month:   " + cal.getTime());
+			this.datePickerTo.setDate(DateHelper.dateToLocalDate(cal.getTime()));
+
+			return;
+		}
+	}
+
 	/* ------------------------------------------------------------ *\
 	|* 		  			GUI Creation & init							*|
 	\* ------------------------------------------------------------ */
@@ -560,19 +624,22 @@ public class MainWindow extends JFrame implements WindowListener
 		JMenuItem menuFileQuit = new JMenuItem();
 		this.buttonConnect = new JLabel();
 		this.labelAccountValue = new JLabel();
+		this.radioToday = new JRadioButton();
 		JLabel labelRDV = new JLabel();
 		this.labelNbEvents = new JLabel();
-		this.labelCalendar = new JLabel();
-		JLabel labellDateFrom = new JLabel();
-		this.scrollEvents = new JScrollPane();
-		this.tableEvents = new JTable();
-		this.txtDateFrom = new JTextField();
-		this.scrollCalendars = new JScrollPane();
-		this.tableCalendars = new JTable();
-		JLabel labelDateTo = new JLabel();
-		this.txtDateTo = new JTextField();
 		JLabel labelFilter = new JLabel();
 		this.txtFilter = new JTextField();
+		this.labelCalendar = new JLabel();
+		this.radioWeek = new JRadioButton();
+		this.scrollEvents = new JScrollPane();
+		this.tableEvents = new JTable();
+		this.scrollCalendars = new JScrollPane();
+		this.tableCalendars = new JTable();
+		this.radioMonth = new JRadioButton();
+		JLabel labellDateFrom = new JLabel();
+		this.txtDateFrom = new JTextField();
+		JLabel labelDateTo = new JLabel();
+		this.txtDateTo = new JTextField();
 		this.buttonRefresh = new JButton();
 		JButton buttonExit = new JButton();
 		this.labelMessage = new TimedLabel();
@@ -581,9 +648,9 @@ public class MainWindow extends JFrame implements WindowListener
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FormLayout(
-			"$ugap, $lcgap, right:default, $lcgap, default:grow(0.3), 3*($lcgap, default), $lcgap, default:grow, $lcgap, default, $lcgap, default:grow(0.5), $lcgap, $ugap",
-			"6*(default, $lgap), 2*(fill:default:grow, $lgap), 2*(default, $lgap), default"));
-		((FormLayout)contentPane.getLayout()).setColumnGroups(new int[][] {{5, 13, 17}});
+			"$ugap, $lcgap, right:default, $lcgap, 50dlu, 4*($lcgap, default), $lcgap, default:grow, $lcgap, default, $lcgap, default:grow(0.5), $lcgap, $ugap",
+			"8*(default, $lgap), fill:default:grow, 2*($lgap, default)"));
+		((FormLayout)contentPane.getLayout()).setColumnGroups(new int[][] {{15, 19}});
 
 		//======== menuBar ========
 
@@ -612,46 +679,77 @@ public class MainWindow extends JFrame implements WindowListener
 				buttonConnectMouseClicked(e);
 			}
 		});
-		contentPane.add(this.buttonConnect, CC.xy(15, 1));
+		contentPane.add(this.buttonConnect, CC.xy(17, 1));
 
 		//---- labelAccountValue ----
 		this.labelAccountValue.setText("text");
-		contentPane.add(this.labelAccountValue, CC.xywh(17, 1, 3, 1));
+		contentPane.add(this.labelAccountValue, CC.xywh(19, 1, 3, 1));
+
+		//---- radioToday ----
+		this.radioToday.setText("Aujourd'hui");
+		this.radioToday.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				radioTodayActionPerformed(e);
+			}
+		});
+		contentPane.add(this.radioToday, CC.xywh(3, 3, 3, 1));
 
 		//---- labelRDV ----
 		labelRDV.setText("Rendez-vous :");
-		contentPane.add(labelRDV, CC.xy(9, 3));
+		contentPane.add(labelRDV, CC.xy(7, 3));
 
 		//---- labelNbEvents ----
 		this.labelNbEvents.setText("0");
-		contentPane.add(this.labelNbEvents, CC.xy(11, 3));
-
-		//---- labelCalendar ----
-		this.labelCalendar.setText("Agendas : ");
-		contentPane.add(this.labelCalendar, CC.xy(15, 3));
-
-		//---- labellDateFrom ----
-		labellDateFrom.setText("De :");
-		contentPane.add(labellDateFrom, CC.xy(3, 5));
-
-		//======== scrollEvents ========
-		this.scrollEvents.setViewportView(this.tableEvents);
-		contentPane.add(this.scrollEvents, CC.xywh(9, 5, 5, 13));
-		contentPane.add(this.txtDateFrom, CC.xy(5, 5));
-
-		//======== scrollCalendars ========
-		this.scrollCalendars.setViewportView(this.tableCalendars);
-		contentPane.add(this.scrollCalendars, CC.xywh(15, 5, 3, 9));
-
-		//---- labelDateTo ----
-		labelDateTo.setText("A :");
-		contentPane.add(labelDateTo, CC.xy(3, 7));
-		contentPane.add(this.txtDateTo, CC.xy(5, 7));
+		contentPane.add(this.labelNbEvents, CC.xy(9, 3));
 
 		//---- labelFilter ----
 		labelFilter.setText("Filtre");
-		contentPane.add(labelFilter, CC.xy(3, 9));
-		contentPane.add(this.txtFilter, CC.xy(5, 9));
+		contentPane.add(labelFilter, CC.xy(13, 3));
+		contentPane.add(this.txtFilter, CC.xy(15, 3));
+
+		//---- labelCalendar ----
+		this.labelCalendar.setText("Agendas : ");
+		contentPane.add(this.labelCalendar, CC.xy(17, 3));
+
+		//---- radioWeek ----
+		this.radioWeek.setText("Cette semaine");
+		this.radioWeek.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				radioWeekActionPerformed(e);
+			}
+		});
+		contentPane.add(this.radioWeek, CC.xywh(3, 5, 3, 1));
+
+		//======== scrollEvents ========
+		this.scrollEvents.setViewportView(this.tableEvents);
+		contentPane.add(this.scrollEvents, CC.xywh(7, 5, 9, 15));
+
+		//======== scrollCalendars ========
+		this.scrollCalendars.setViewportView(this.tableCalendars);
+		contentPane.add(this.scrollCalendars, CC.xywh(17, 5, 3, 9));
+
+		//---- radioMonth ----
+		this.radioMonth.setText("Ce mois");
+		this.radioMonth.setSelected(true);
+		this.radioMonth.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				radioMonthActionPerformed(e);
+			}
+		});
+		contentPane.add(this.radioMonth, CC.xywh(3, 7, 3, 1));
+
+		//---- labellDateFrom ----
+		labellDateFrom.setText("De :");
+		contentPane.add(labellDateFrom, CC.xy(3, 9));
+		contentPane.add(this.txtDateFrom, CC.xy(5, 9));
+
+		//---- labelDateTo ----
+		labelDateTo.setText("A :");
+		contentPane.add(labelDateTo, CC.xy(3, 11));
+		contentPane.add(this.txtDateTo, CC.xy(5, 11));
 
 		//---- buttonRefresh ----
 		this.buttonRefresh.setText("Actualiser");
@@ -661,7 +759,7 @@ public class MainWindow extends JFrame implements WindowListener
 				buttonRefreshActionPerformed(e);
 			}
 		});
-		contentPane.add(this.buttonRefresh, CC.xy(5, 11));
+		contentPane.add(this.buttonRefresh, CC.xywh(3, 13, 3, 1));
 
 		//---- buttonExit ----
 		buttonExit.setText("Quitter");
@@ -671,10 +769,16 @@ public class MainWindow extends JFrame implements WindowListener
 				buttonExitActionPerformed(e);
 			}
 		});
-		contentPane.add(buttonExit, CC.xy(17, 17));
-		contentPane.add(this.labelMessage, CC.xywh(3, 19, 15, 1));
-		setSize(545, 345);
+		contentPane.add(buttonExit, CC.xy(19, 19));
+		contentPane.add(this.labelMessage, CC.xywh(3, 21, 17, 1));
+		setSize(645, 390);
 		setLocationRelativeTo(getOwner());
+
+		//---- radioGroupTimeInterval ----
+		ButtonGroup radioGroupTimeInterval = new ButtonGroup();
+		radioGroupTimeInterval.add(this.radioToday);
+		radioGroupTimeInterval.add(this.radioWeek);
+		radioGroupTimeInterval.add(this.radioMonth);
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
@@ -813,7 +917,7 @@ public class MainWindow extends JFrame implements WindowListener
 				catch(ParseException e1){}
 			}
 		});
-        getContentPane().add(this.datePickerFrom, CC.xy(7, 5));
+        getContentPane().add(this.datePickerFrom, CC.xy(7, 11));
         
 		DatePickerSettings dateSettingsTo = new DatePickerSettings();
 		dateSettingsTo.setVisibleDateTextField(false);
@@ -833,7 +937,7 @@ public class MainWindow extends JFrame implements WindowListener
 				catch(ParseException e1){}
 			}
 		});
-        getContentPane().add(this.datePickerTo, CC.xy(7, 7));
+        getContentPane().add(this.datePickerTo, CC.xy(7, 13));
 
 	}
 
@@ -880,15 +984,18 @@ public class MainWindow extends JFrame implements WindowListener
 	// Generated using JFormDesigner Evaluation license - yggpuduku
 	private JLabel buttonConnect;
 	private JLabel labelAccountValue;
+	private JRadioButton radioToday;
 	private JLabel labelNbEvents;
+	private JTextField txtFilter;
 	private JLabel labelCalendar;
+	private JRadioButton radioWeek;
 	private JScrollPane scrollEvents;
 	private JTable tableEvents;
-	private JTextField txtDateFrom;
 	private JScrollPane scrollCalendars;
 	private JTable tableCalendars;
+	private JRadioButton radioMonth;
+	private JTextField txtDateFrom;
 	private JTextField txtDateTo;
-	private JTextField txtFilter;
 	private JButton buttonRefresh;
 	private TimedLabel labelMessage;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
