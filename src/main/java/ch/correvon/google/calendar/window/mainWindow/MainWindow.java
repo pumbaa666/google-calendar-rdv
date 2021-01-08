@@ -183,8 +183,8 @@ public class MainWindow extends JFrame implements WindowListener
 			int h = Integer.parseInt(metadata.get(PREF_MAIN_WINDOW_H));
 			super.setLocation(x, y);
 			super.setSize(w, h);
-
-//			this.selectedCalendarName = metadata.get(PREF_SELECTED_CALENDAR);
+			
+			// TODO timeinterval, agendas sélectionnés
 		}
 		catch(NumberFormatException e)
 		{
@@ -205,8 +205,8 @@ public class MainWindow extends JFrame implements WindowListener
 		metadata.put(PREF_MAIN_WINDOW_Y, "" + super.getLocation().y);
 		metadata.put(PREF_MAIN_WINDOW_W, "" + super.getSize().width);
 		metadata.put(PREF_MAIN_WINDOW_H, "" + super.getSize().height);
-//		if(this.selectedCalendar != null)
-//			metadata.put(PREF_SELECTED_CALENDAR, "" + this.selectedCalendar.getSummary());
+		
+		// TODO timeinterval, agendas sélectionnés
 
 		return metadata;
 	}
@@ -622,6 +622,7 @@ public class MainWindow extends JFrame implements WindowListener
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menuFile = new JMenu();
 		JMenuItem menuFileQuit = new JMenuItem();
+		this.labelMessage = new TimedLabel();
 		this.buttonConnect = new JLabel();
 		this.labelAccountValue = new JLabel();
 		this.radioToday = new JRadioButton();
@@ -642,14 +643,13 @@ public class MainWindow extends JFrame implements WindowListener
 		this.txtDateTo = new JTextField();
 		this.buttonRefresh = new JButton();
 		JButton buttonExit = new JButton();
-		this.labelMessage = new TimedLabel();
 
 		//======== this ========
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FormLayout(
 			"$ugap, $lcgap, right:default, $lcgap, 50dlu, 4*($lcgap, default), $lcgap, default:grow, $lcgap, default, $lcgap, default:grow(0.5), $lcgap, $ugap",
-			"8*(default, $lgap), fill:default:grow, 2*($lgap, default)"));
+			"7*(default, $lgap), fill:default:grow(0.33), $lgap, fill:default:grow, $lgap, default, $lgap, $ugap"));
 		((FormLayout)contentPane.getLayout()).setColumnGroups(new int[][] {{15, 19}});
 
 		//======== menuBar ========
@@ -668,6 +668,7 @@ public class MainWindow extends JFrame implements WindowListener
 		menuFile.add(menuFileQuit);
 		menuBar.add(menuFile);
 		setJMenuBar(menuBar);
+		contentPane.add(this.labelMessage, CC.xywh(3, 1, 13, 1));
 
 		//---- buttonConnect ----
 		this.buttonConnect.setText("Connexion");
@@ -728,7 +729,7 @@ public class MainWindow extends JFrame implements WindowListener
 
 		//======== scrollCalendars ========
 		this.scrollCalendars.setViewportView(this.tableCalendars);
-		contentPane.add(this.scrollCalendars, CC.xywh(17, 5, 3, 9));
+		contentPane.add(this.scrollCalendars, CC.xywh(17, 5, 3, 11));
 
 		//---- radioMonth ----
 		this.radioMonth.setText("Ce mois");
@@ -770,7 +771,6 @@ public class MainWindow extends JFrame implements WindowListener
 			}
 		});
 		contentPane.add(buttonExit, CC.xy(19, 19));
-		contentPane.add(this.labelMessage, CC.xywh(3, 21, 17, 1));
 		setSize(645, 390);
 		setLocationRelativeTo(getOwner());
 
@@ -982,6 +982,7 @@ public class MainWindow extends JFrame implements WindowListener
 	\* ---------------------------------------- */
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
 	// Generated using JFormDesigner Evaluation license - yggpuduku
+	private TimedLabel labelMessage;
 	private JLabel buttonConnect;
 	private JLabel labelAccountValue;
 	private JRadioButton radioToday;
@@ -997,6 +998,5 @@ public class MainWindow extends JFrame implements WindowListener
 	private JTextField txtDateFrom;
 	private JTextField txtDateTo;
 	private JButton buttonRefresh;
-	private TimedLabel labelMessage;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

@@ -22,7 +22,6 @@ public class GoogleRDV
 
 	/*
 	 *	TODO
-	 *	Sauver les paramètres (dates, filtre, agendas sélectionnés)
 	 *	Version NodeJS ? (branche séparée)
 	 */
 }

@@ -5,13 +5,19 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 			"$columnSpecs": "unrelgap, labelcompgap, right:default, labelcompgap, 50dlu, labelcompgap, default, labelcompgap, default, labelcompgap, default, labelcompgap, default, labelcompgap, default:grow, labelcompgap, default, labelcompgap, default:grow(0.5), labelcompgap, unrelgap"
-			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, fill:default:grow, linegap, default, linegap, default"
+			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, fill:default:grow(0.33), linegap, fill:default:grow, linegap, default, linegap, unrelgap"
 			"$columnGroupIds": "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0"
 		} ) {
 			name: "this"
 			"$sizePolicy": 1
 			"$locationPolicy": 0
 			"defaultCloseOperation": 3
+			add( new FormComponent( "ch.correvon.google.calendar.components.TimedLabel" ) {
+				name: "labelMessage"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridWidth": 13
+			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "buttonConnect"
 				"text": "Connexion"
@@ -108,7 +114,7 @@ new FormModel {
 				"gridX": 17
 				"gridY": 5
 				"gridWidth": 3
-				"gridHeight": 9
+				"gridHeight": 11
 			} )
 			add( new FormComponent( "javax.swing.JRadioButton" ) {
 				name: "radioMonth"
@@ -172,13 +178,6 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 19
 				"gridY": 19
-			} )
-			add( new FormComponent( "ch.correvon.google.calendar.components.TimedLabel" ) {
-				name: "labelMessage"
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 3
-				"gridY": 21
-				"gridWidth": 17
 			} )
 			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 				name: "menuBar"
