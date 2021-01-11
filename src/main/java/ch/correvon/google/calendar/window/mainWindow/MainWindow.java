@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.font.TextAttribute;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -614,7 +615,6 @@ public class MainWindow extends JFrame implements WindowListener
 	/* ------------------------------------------------------------ *\
 	|* 		  			GUI Creation & init							*|
 	\* ------------------------------------------------------------ */
-	@SuppressWarnings("all")// A cause du fuckin watermark
 	private void initComponents()
 	{
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
@@ -784,7 +784,7 @@ public class MainWindow extends JFrame implements WindowListener
 
 	private void myInit()
 	{
-//		// Vire le fuckin watermark
+		// Vire le fuckin watermark
 //		for(PropertyChangeListener listener:this.panelLeft.getPropertyChangeListeners())
 //			this.panelLeft.removePropertyChangeListener(listener);
 //		this.panelLeft.setBorder(null);
