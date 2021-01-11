@@ -26,6 +26,8 @@ public class GoogleRDV
 	 *	Readme
 	 *	exe
 	 *	tag 1.0
+	 *	batch delete
+	 *
 	 *	Version NodeJS ? (branche séparée)
 	 */
 }
