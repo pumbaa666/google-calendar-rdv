@@ -2,3 +2,4 @@ bin
 /src/main/resources/client_secret.json
 /logs/*.log
 LGoodDatePicker-11.1.0-Standard
+/target/

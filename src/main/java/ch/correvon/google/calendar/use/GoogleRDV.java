@@ -22,10 +22,7 @@ public class GoogleRDV
 
 	/*
 	 *	TODO
-	 *	Capture d'écran pour github
-	 *	Readme
-	 *	exe
-	 *	tag 1.0
+	 *	Better Readme
 	 *	batch delete
 	 *
 	 *	Version NodeJS ? (branche séparée)
