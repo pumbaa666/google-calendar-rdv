@@ -9,7 +9,7 @@ public class GoogleRDV
 {
 	private static Log s_logger = LogFactory.getLog(GoogleRDV.class);
 	public static final String APPLICATION_NAME = "PUMBAA google-cal RENDEZ-VOUS";
-	private static final String VERSION = "0.1";
+	private static final String VERSION = "1.0.0";
 
 	/*
 	 * https://console.developers.google.com/apis/credentials?project=medical-calendar-1125
