@@ -2,8 +2,13 @@
 ## google-calendar-rdv
 Affiche vos rendez-vous sous forme de liste pour une vue plus rapide.
 Possibilité de filtrer par date et par nom.
+Permet de supprimer plusieurs rendez-vous à la fois.
+
+## Pré-requis
+Installer un environnement Java 1.8 minimum https://www.oracle.com/java/technologies/javase-jre8-downloads.html
 
 ## Raccourcis
+[DELETE]	Supprimer le rendez-vous (Dans Rendez-vous et dans Google Calendar)
 
 ## Screenshots
 ###Interface
