@@ -3,3 +3,7 @@ bin
 /logs/*.log
 LGoodDatePicker-11.1.0-Standard
 /target/
+/data/*
+!/data/.gitkeep
+.settings/
+.vscode/
